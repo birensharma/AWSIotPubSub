@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/dashboard"
+            android:icon="@drawable/ic_action_dash"
+            android:title="Dashboard" />
+        <item
+            android:id="@+id/temp"
+            android:icon="@drawable/ic_action_sunny"
+            android:title="Temperature" />
+        <item
+            android:id="@+id/humid"
+            android:icon="@drawable/ic_action_cloud"
+            android:title="Humidity" />
+        <item
+            android:id="@+id/air"
+            android:icon="@drawable/ic_action_name"
+            android:title="Air Quality" />
+        <item
+            android:id="@+id/facts"
+            android:icon="@drawable/ic_action_bulb"
+            android:title="Daily Facts" />
+    </group>
+
+    <item android:title="Other">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Logout" />
+        </menu>
+    </item>
+
+</menu>

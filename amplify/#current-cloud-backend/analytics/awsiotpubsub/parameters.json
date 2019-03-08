@@ -1,0 +1,11 @@
+{
+    "appName": "awsiotpubsub",
+    "roleName": "pinpointLambdaRole3677816c",
+    "cloudWatchPolicyName": "cloudWatchPolicy3677816c",
+    "pinpointPolicyName": "pinpointPolicy3677816c",
+    "authPolicyName": "pinpoint_amplify_3677816c",
+    "unauthPolicyName": "pinpoint_amplify_3677816c",
+    "authRoleName": "otubub-20181020124459-authRole",
+    "unauthRoleName": "otubub-20181020124459-unauthRole",
+    "IAMPrefix": "575213043634"
+}

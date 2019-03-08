@@ -1,0 +1,16 @@
+{
+    "projectName": "AWSIotPubSub",
+    "projectPath": "D:\\AndroidStudio_projects\\AWSIotPubSub",
+    "defaultEditor": "code",
+    "frontendHandler": {
+        "android": "C:\\Users\\SUBHASH\\AppData\\Roaming\\npm\\node_modules\\@aws-amplify\\cli\\node_modules\\amplify-frontend-android"
+    },
+    "amplify-frontend-android": {
+        "config": {
+            "ResDir": "app/src/main/res"
+        }
+    },
+    "providers": {
+        "awscloudformation": "C:\\Users\\SUBHASH\\AppData\\Roaming\\npm\\node_modules\\@aws-amplify\\cli\\node_modules\\amplify-provider-awscloudformation"
+    }
+}

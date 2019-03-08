@@ -1,0 +1,14 @@
+{
+    "providers": {
+        "awscloudformation": {
+            "AuthRoleName": "otubub-20181020124459-authRole",
+            "UnauthRoleArn": "arn:aws:iam::575213043634:role/otubub-20181020124459-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::575213043634:role/otubub-20181020124459-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "otubub-20181020124459-deployment",
+            "UnauthRoleName": "otubub-20181020124459-unauthRole",
+            "StackName": "otubub-20181020124459",
+            "StackId": "arn:aws:cloudformation:us-west-2:575213043634:stack/otubub-20181020124459/dc1825e0-d437-11e8-a8e6-50d5ca789e4a"
+        }
+    }
+}
