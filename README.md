@@ -31,7 +31,7 @@
    <li>Jenkins</li>
   <li>Amazon Web Services</li>
   <li>AWS Android API</li>
-   <li>ESP8266 and DHT Sensors</li>
+   <li>ESP8266 and DHT Sensor</li>
   <li>Arduino IDE</li>
   <li> C++</li>
    <li>VS Code Editor</li>
