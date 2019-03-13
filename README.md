@@ -12,7 +12,7 @@
 <img alt="undefined" src="https://img.shields.io/bitbucket/issues-raw/birensharma/Capstone_IOT.svg?style=flat"> &nbsp;
   <img alt="undefined" src="https://img.shields.io/github/languages/code-size/birensharma/Capstone_IOT.svg?style=flat">
 
-<h2>Wireframe Model</h2>
+<h2>Project Wireframe Model</h2>
 <div>
 <img src="https://github.com/birensharma/Capstone_IOT/blob/master/Wireframe_Model/Picture1.png" width="250" height="400"> 
 <img src="https://github.com/birensharma/Capstone_IOT/blob/master/Wireframe_Model/Picture2.png" width="250" height="400"> 
