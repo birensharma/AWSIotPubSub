@@ -29,7 +29,7 @@
   <li>Java</li>
   <li>XML</li>
    <li>Jenkins</li>
-  <li>Amazon Web Service</li>
+  <li>Amazon Web Services</li>
   <li>AWS Android API</li>
    <li>ESP8266 and DHT Sensors</li>
   <li>Arduino IDE</li>
