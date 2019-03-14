@@ -1,5 +1,5 @@
 
-package com.awsiot.awsiotpubsub;
+//package com.awsiot.awsiotpubsub;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
