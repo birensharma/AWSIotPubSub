@@ -1,5 +1,5 @@
 
-//package com.awsiot.awsiotpubsub;
+package com.awsiot.awsiotpubsub;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -58,13 +58,13 @@ public class Dashboard extends Fragment {
     private static final String AWS_IOT_POLICY_NAME = "mos-default";
 
     // Region of AWS IoT
-   // private static final Regions MY_REGION = Regions.US_WEST_2;
+    private static final Regions MY_REGION = Regions.US_WEST_2;
     // Filename of KeyStore file on the filesystem
-   // private static final String KEYSTORE_NAME = "iot_keystore";
+    private static final String KEYSTORE_NAME = "iot_keystore";
     // Password for the private key in the KeyStore
-   // private static final String KEYSTORE_PASSWORD = "password";
+    private static final String KEYSTORE_PASSWORD = "password";
     // Certificate and key aliases in the KeyStore
-   // private static final String CERTIFICATE_ID = "default";
+   private static final String CERTIFICATE_ID = "default";
 
     double temp,humid;
     DataPoint[] dataPoints=new DataPoint[]{};
