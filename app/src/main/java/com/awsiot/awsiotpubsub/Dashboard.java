@@ -37,7 +37,7 @@ import java.util.UUID;
 
 public class Dashboard extends Fragment {
 
-///hhhelo
+///hhhelogggggggooooooooo
     static final String LOG_TAG = Dashboard.class.getCanonicalName();
 
     @Override
