@@ -22,11 +22,11 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.iot.AWSIotClient;
 import com.amazonaws.services.iot.model.AttachPrincipalPolicyRequest;
-//import com.amazonaws.services.iot.model.CreateKeysAndCertificateRequest;
-//import com.amazonaws.services.iot.model.CreateKeysAndCertificateResult;
-//import com.jjoe64.graphview.GraphView;
-//import com.jjoe64.graphview.series.DataPoint;
-//import com.jjoe64.graphview.series.PointsGraphSeries;
+import com.amazonaws.services.iot.model.CreateKeysAndCertificateRequest;
+import com.amazonaws.services.iot.model.CreateKeysAndCertificateResult;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.PointsGraphSeries;
 
 import org.json.JSONObject;
 
