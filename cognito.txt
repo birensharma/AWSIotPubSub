@@ -3,3 +3,4 @@ CognitoCachingCredentialsProvider credentialsProvider = new CognitoCachingCreden
     "us-east-2:01c0b7e0-d8c8-43aa-8fcc-d9b802edf4a3", // Identity pool ID
     Regions.US_EAST_2 // Region
 );
+a32de4gh5zk17w-ats.iot.us-east-2.amazonaws.com
