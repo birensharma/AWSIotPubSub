@@ -37,7 +37,7 @@ import java.util.UUID;
 
 public class Dashboard extends Fragment {
 
-///hhhe
+
     static final String LOG_TAG = Dashboard.class.getCanonicalName();
 
     @Override
@@ -50,10 +50,10 @@ public class Dashboard extends Fragment {
 
     // IoT endpoint
     // AWS Iot CLI describe-endpoint call returns: XXXXXXXXXX.iot.<region>.amazonaws.com
-    private static final String CUSTOMER_SPECIFIC_ENDPOINT = "a1e6joc1firkfd-ats.iot.us-west-2.amazonaws.com";
+    private static final String CUSTOMER_SPECIFIC_ENDPOINT = "a32de4gh5zk17w-ats.iot.us-east-2.amazonaws.com";
     // Cognito pool ID. For this app, pool needs to be unauthenticated pool with
     // AWS IoT permissions.
-    private static final String COGNITO_POOL_ID = "us-west-2:8708d132-fd53-46e8-a225-789ba2af8ace";
+    private static final String COGNITO_POOL_ID = "us-east-2:01c0b7e0-d8c8-43aa-8fcc-d9b802edf4a3";
     // Name of the AWS IoT policy to attach to a newly created certificate
     private static final String AWS_IOT_POLICY_NAME = "mos-default";
 
@@ -64,7 +64,7 @@ public class Dashboard extends Fragment {
     // Password for the private key in the KeyStore
     private static final String KEYSTORE_PASSWORD = "password";
     // Certificate and key aliases in the KeyStore
-   private static final String CERTIFICATE_ID = "default";
+    private static final String CERTIFICATE_ID = "default";
 
     double temp,humid;
     DataPoint[] dataPoints=new DataPoint[]{};
@@ -311,8 +311,8 @@ public class Dashboard extends Fragment {
 
                                         String message = new String(data, "UTF-8");
                                         jsonObj = new JSONObject(message);
-                                        temp=(double)jsonObj.get("temperature");
-                                        humid=(double)jsonObj.get("humidity");
+                                        temp=(double)jsonObj.get("Temperature");
+                                        humid=(double)jsonObj.get("Humidity");
                                         message="TEMPERATURE: "+temp+
                                                 "°C\nHUMIDITY: "+humid+
                                                 "%\n\nTimestamp:"+jsonObj.get("timestamp");

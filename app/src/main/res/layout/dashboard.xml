@@ -8,18 +8,21 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context=".Dashboard">
+    tools:context=".Dashboard"
+    android:background="#2196f3"
+    >
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="5dp"
-        app:cardCornerRadius="5dp"
+        app:cardElevation="10dp"
+        app:cardCornerRadius="0dp"
         >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="5dp"
-            android:orientation="vertical">
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:background="#00897b">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -28,19 +31,21 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:text="Client Id:"
                     android:textStyle="bold"
-                    android:textSize="10dp"/>
+                    android:textSize="10dp"
+                    android:textColor="@color/white"/>
 
                 <TextView
                     android:id="@+id/tvClientId"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="5"
+                    android:layout_weight="6"
                     android:textSize="10dp"
-                    android:gravity="center_vertical" />
+                    android:gravity="center_vertical"
+                    android:textColor="@color/white"/>
             </LinearLayout>
 
             <LinearLayout
@@ -51,20 +56,22 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     android:gravity="center_vertical"
                     android:textStyle="bold"
                     android:textSize="10dp"
-                    android:text="Status:" />
+                    android:text="Status:"
+                    android:textColor="@color/white"/>
 
                 <TextView
                     android:id="@+id/tvStatus"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="5"
+                    android:layout_weight="8"
                     android:gravity="center_vertical"
                     android:text="Disconnected"
-                    android:textSize="10dp"/>
+                    android:textSize="10dp"
+                    android:textColor="@color/white"/>
             </LinearLayout>
 
             <LinearLayout
@@ -105,36 +112,196 @@
 
 <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:scrollbars="none">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="10dp">
-        <TextView
-            android:id="@+id/txtMessage"
+        android:background="@drawable/backgroundmain">
+        <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:padding="20dp"
-            android:gravity="center"
-            android:text="Temperature"/>
-        <com.jjoe64.graphview.GraphView
+            android:layout_marginVertical="20dp"
+            android:layout_marginHorizontal="10dp">
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:layout_columnWeight="1"
+                app:cardCornerRadius="20dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="20dp">
+                    <TextView
+                        android:id="@+id/index"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Air index"
+                        android:textSize="20dp"
+                        android:layout_centerHorizontal="true"
+                        android:textStyle="bold"/>
+                    <ProgressBar
+                        android:id="@+id/progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/index"
+                        android:layout_centerHorizontal="true"
+                        android:rotation="120"
+                        android:layout_marginTop="20dp"
+                        />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:layout_margin="5dp"
+                android:layout_columnWeight="1">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="20dp">
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_row="1"
+                android:layout_column="0"
+                android:layout_columnWeight="1">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="20dp">
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_row="1"
+                android:layout_column="1"
+                android:layout_margin="5dp"
+                android:layout_columnWeight="1">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="20dp">
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+        </GridLayout>
+        <View
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:id="@+id/graph" />
-        <TextView
-            android:id="@+id/humidtxt"
-            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginVertical="20dp"
+            android:background="#ddd"/>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:padding="20dp"
-            android:gravity="center"
-            android:text="Humidity"/>
-        <com.jjoe64.graphview.GraphView
+            app:cardCornerRadius="30dp"
+            app:cardElevation="5dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:layout_margin="20dp"
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp"
+                android:background="@drawable/background2">
+                <ImageView
+                    android:id="@+id/tempImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_action_sunny"
+                    android:layout_centerHorizontal="true"/>
+                <TextView
+                    android:id="@+id/txtMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:padding="20dp"
+                    android:gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:text="Temperature"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"/>
+                <com.jjoe64.graphview.GraphView
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:id="@+id/graph"
+                    android:layout_below="@id/txtMessage"
+                    />
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+        <View
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:id="@+id/hgraph" />
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginVertical="20dp"
+            android:background="#ddd"/>
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="30dp"
+            android:elevation="5dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_margin="20dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp"
+                android:background="@drawable/background">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_action_name"
+                    android:layout_gravity="center"
+                    android:layout_centerHorizontal="true"/>
+                <TextView
+                    android:id="@+id/humidtxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:padding="20dp"
+                    android:gravity="center"
+                    android:text="Humidity"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"/>
+                <com.jjoe64.graphview.GraphView
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:id="@+id/hgraph"
+                    android:layout_below="@id/humidtxt"/>
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginVertical="20dp"
+            android:background="#ddd"/>
+
     </LinearLayout>
 
 

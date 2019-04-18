@@ -18,9 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
-
-        <activity android:name=".Drawer"
+        <activity android:name=".Facts"></activity>
+        <activity android:name=".AirIndex" />
+        <activity android:name=".Humidity" />
+        <activity android:name=".Temperature" />
+        <activity
+            android:name=".Drawer"
             android:label="@string/title_activity_drawer"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

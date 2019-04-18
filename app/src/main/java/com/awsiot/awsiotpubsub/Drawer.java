@@ -78,21 +78,26 @@ public class Drawer extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         if (id == R.id.dashboard) {
-            Toast.makeText(this, "Dashboard", Toast.LENGTH_SHORT).show();
             fragment=new Dashboard();
             setTitle("Dashboard");
             fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
         } else if (id == R.id.temp) {
+            fragment=new Temperature();
+            setTitle("Temperature");
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
         } else if (id == R.id.humid) {
-
+            fragment=new Humidity();
+            setTitle("Humidity");
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
         } else if (id == R.id.air) {
-
+            fragment=new AirIndex();
+            setTitle("Air Index");
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
-
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
