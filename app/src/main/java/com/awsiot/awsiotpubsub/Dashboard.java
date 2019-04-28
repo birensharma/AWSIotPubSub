@@ -1,16 +1,26 @@
 
 package com.awsiot.awsiotpubsub;
 
+import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.DashPathEffect;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.WindowManager;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.iot.AWSIotKeystoreHelper;
 import com.amazonaws.mobileconnectors.iot.AWSIotMqttClientStatusCallback;
@@ -24,51 +34,69 @@ import com.amazonaws.services.iot.AWSIotClient;
 import com.amazonaws.services.iot.model.AttachPrincipalPolicyRequest;
 import com.amazonaws.services.iot.model.CreateKeysAndCertificateRequest;
 import com.amazonaws.services.iot.model.CreateKeysAndCertificateResult;
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.PointsGraphSeries;
+import com.xw.repo.BubbleSeekBar;
 
 import org.json.JSONObject;
 
 import java.security.KeyStore;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 
-public class Dashboard extends Fragment {
+public class Dashboard extends AppCompatActivity {
 
 
     static final String LOG_TAG = Dashboard.class.getCanonicalName();
+    private Typeface tfLight,tfLabel;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(clientId==null)
+            awsSetup();
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         disconnect();
-        Toast.makeText(getContext(), "MQTT Disconnected", Toast.LENGTH_SHORT).show();
     }
-// --- Constants to modify per your configuration ---
-
-    // IoT endpoint
-    // AWS Iot CLI describe-endpoint call returns: XXXXXXXXXX.iot.<region>.amazonaws.com
     private static final String CUSTOMER_SPECIFIC_ENDPOINT = "a32de4gh5zk17w-ats.iot.us-east-2.amazonaws.com";
-    // Cognito pool ID. For this app, pool needs to be unauthenticated pool with
-    // AWS IoT permissions.
     private static final String COGNITO_POOL_ID = "us-east-2:01c0b7e0-d8c8-43aa-8fcc-d9b802edf4a3";
-    // Name of the AWS IoT policy to attach to a newly created certificate
     private static final String AWS_IOT_POLICY_NAME = "mos-default";
-
-    // Region of AWS IoT
-    private static final Regions MY_REGION = Regions.US_WEST_2;
-    // Filename of KeyStore file on the filesystem
+    private static final Regions MY_REGION = Regions.US_EAST_2;
     private static final String KEYSTORE_NAME = "iot_keystore";
-    // Password for the private key in the KeyStore
     private static final String KEYSTORE_PASSWORD = "password";
-    // Certificate and key aliases in the KeyStore
     private static final String CERTIFICATE_ID = "default";
+    private ArrayList<Entry> values = new ArrayList<>();
 
-    double temp,humid;
-    DataPoint[] dataPoints=new DataPoint[]{};
-    GraphView graph;
+    private BubbleSeekBar bubbleSeekBar;
+    private float index=0.0f;
+    private TextView ppmTxt,temptxt;
+    private CardView dailyFacts;
+    double resistance;
+    int temp,humid,cppm,ppm,t=0,h=0,a=0;
+
+    //    DataPoint[] dataPoints=new DataPoint[]{};
+    LineChart graphTemp,graphHumidity,graphppm;
+
     TextView txtMessage;
     JSONObject jsonObj;
     ArrayList<xyValue> xyValueArrayList=new ArrayList<>();
@@ -76,12 +104,11 @@ public class Dashboard extends Fragment {
     TextView tvClientId;
     TextView tvStatus;
 
-    Button btnConnect;
-    Button btnDisconnect;
+    FloatingActionButton btnConnect,btnDisconnect;
 
     AWSIotClient mIotAndroidClient;
     AWSIotMqttManager mqttManager;
-    String clientId;
+    String clientId=null;
     String keystorePath;
     String keystoreName;
     String keystorePassword;
@@ -93,68 +120,74 @@ public class Dashboard extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        View v = inflater.inflate(R.layout.dashboard, container, false);
-
-        txtMessage =  v.findViewById(R.id.txtMessage);
-        tvClientId = (TextView) v.findViewById(R.id.tvClientId);
-        tvStatus = (TextView) v.findViewById(R.id.tvStatus);
-
-        btnConnect = (Button) v.findViewById(R.id.btnConnect);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.dashboard);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        ppmTxt=findViewById(R.id.ppmtxt);
+        temptxt=findViewById(R.id.temperature);
+        txtMessage =  findViewById(R.id.txtMessage);
+        tvClientId = (TextView) findViewById(R.id.tvClientId);
+        tvStatus = (TextView) findViewById(R.id.tvStatus);
+        bubbleSeekBar=findViewById(R.id.seek);
+        btnConnect =  findViewById(R.id.btnConnect);
         btnConnect.setOnClickListener(connectClick);
         btnConnect.setEnabled(false);
-        graph = (GraphView) v.findViewById(R.id.graph);
-        series=new PointsGraphSeries<>();
-        graph.setTitle("Temperature vs Humidity");
-        series.setShape(PointsGraphSeries.Shape.TRIANGLE);
-        graph.getViewport().setMaxX(100);
-        graph.getViewport().setMaxY(100);
-        graph.getViewport().setMinX(0);
-        graph.getViewport().setMinY(0);
+        graphTemp =  findViewById(R.id.graph);
+        graphHumidity =  findViewById(R.id.graphHumid);
+        graphppm =  findViewById(R.id.graphppm);
+        dailyFacts=findViewById(R.id.daily_facts);
+        dailyFacts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Dashboard.this,Facts.class));
+            }
+        });
 
-
-        btnDisconnect = (Button) v.findViewById(R.id.btnDisconnect);
+        tfLight=Typeface.createFromAsset(this.getAssets(),"font/comfortaa.ttf");
+        tfLabel=Typeface.createFromAsset(this.getAssets(),"font/righteous.ttf");
+        btnDisconnect =  findViewById(R.id.btnDisconnect);
         btnDisconnect.setOnClickListener(disconnectClick);
+        btnDisconnect.setBackgroundTintList(ColorStateList
+                .valueOf(getResources().getColor(R.color.colorPrimaryDark)));
+        awsSetup();
+        init();
 
-        // MQTT client IDs are required to be unique per AWS IoT account.
-        // This UUID is "practically unique" but does not _guarantee_
-        // uniqueness.
+    }
+
+//    @Override
+//    public View onCreateVi(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        View v = inflater.inflate(R.layout.dashboard, container, false);
+//
+//
+//        return v;
+//    }
+
+    private void awsSetup() {
         clientId = UUID.randomUUID().toString();
-        tvClientId.setText(clientId);
+//        tvClientId.setText(clientId);
 
-        // Initialize the AWS Cognito credentials provider
         credentialsProvider = new CognitoCachingCredentialsProvider(
-                getContext(), // context
+                getBaseContext(), // context
                 COGNITO_POOL_ID, // Identity Pool ID
                 MY_REGION // Region
         );
 
         Region region = Region.getRegion(MY_REGION);
 
-        // MQTT Client
         mqttManager = new AWSIotMqttManager(clientId, CUSTOMER_SPECIFIC_ENDPOINT);
-
-        // Set keepalive to 10 seconds.  Will recognize disconnects more quickly but will also send
-        // MQTT pings every 10 seconds.
         mqttManager.setKeepAlive(10);
-
-        // Set Last Will and Testament for MQTT.  On an unclean disconnect (loss of connection)
-        // AWS IoT will publish this message to alert other clients.
-        AWSIotMqttLastWillAndTestament lwt = new AWSIotMqttLastWillAndTestament("event/temp_humidity",
+        AWSIotMqttLastWillAndTestament lwt = new AWSIotMqttLastWillAndTestament("capstone",
                 "Android client lost connection", AWSIotMqttQos.QOS0);
         mqttManager.setMqttLastWillAndTestament(lwt);
-
-        // IoT Client (for creation of certificate if needed)
         mIotAndroidClient = new AWSIotClient(credentialsProvider);
         mIotAndroidClient.setRegion(region);
 
-        keystorePath =getActivity().getFilesDir().getPath();
+        keystorePath =getBaseContext().getFilesDir().getPath();
         keystoreName = KEYSTORE_NAME;
         keystorePassword = KEYSTORE_PASSWORD;
         certificateId = CERTIFICATE_ID;
 
-        // To load cert/key from keystore on filesystem
         try {
             if (AWSIotKeystoreHelper.isKeystorePresent(keystorePath, keystoreName)) {
                 if (AWSIotKeystoreHelper.keystoreContainsAlias(certificateId, keystorePath,
@@ -164,7 +197,11 @@ public class Dashboard extends Fragment {
                     // load keystore from file into memory to pass on connection
                     clientKeyStore = AWSIotKeystoreHelper.getIotKeystore(certificateId,
                             keystorePath, keystoreName, keystorePassword);
+                    btnDisconnect.setBackgroundTintList(ColorStateList
+                            .valueOf(getResources().getColor(R.color.colorPrimaryDark)));
+                    btnDisconnect.setEnabled(false);
                     btnConnect.setEnabled(true);
+                    btnConnect.setImageResource(R.drawable.ic_cloud_black_24dp);
                 } else {
                     Log.i(LOG_TAG, "Key/cert " + certificateId + " not found in keystore.");
                 }
@@ -182,9 +219,6 @@ public class Dashboard extends Fragment {
                 @Override
                 public void run() {
                     try {
-                        // Create a new private key and certificate. This call
-                        // creates both on the server and returns them to the
-                        // device.
                         CreateKeysAndCertificateRequest createKeysAndCertificateRequest =
                                 new CreateKeysAndCertificateRequest();
                         createKeysAndCertificateRequest.setSetAsActive(true);
@@ -196,23 +230,14 @@ public class Dashboard extends Fragment {
                                         createKeysAndCertificateResult.getCertificateId() +
                                         " created.");
 
-                        // store in keystore for use in MQTT client
-                        // saved as alias "default" so a new certificate isn't
-                        // generated each run of this application
                         AWSIotKeystoreHelper.saveCertificateAndPrivateKey(certificateId,
                                 createKeysAndCertificateResult.getCertificatePem(),
                                 createKeysAndCertificateResult.getKeyPair().getPrivateKey(),
                                 keystorePath, keystoreName, keystorePassword);
 
-                        // load keystore from file into memory to pass on
-                        // connection
                         clientKeyStore = AWSIotKeystoreHelper.getIotKeystore(certificateId,
                                 keystorePath, keystoreName, keystorePassword);
 
-                        // Attach a policy to the newly created certificate.
-                        // This flow assumes the policy was already created in
-                        // AWS IoT and we are now just attaching it to the
-                        // certificate.
                         AttachPrincipalPolicyRequest policyAttachRequest =
                                 new AttachPrincipalPolicyRequest();
                         policyAttachRequest.setPolicyName(AWS_IOT_POLICY_NAME);
@@ -220,7 +245,7 @@ public class Dashboard extends Fragment {
                                 .getCertificateArn());
                         mIotAndroidClient.attachPrincipalPolicy(policyAttachRequest);
 
-                        getActivity().runOnUiThread(new Runnable() {
+                        runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 btnConnect.setEnabled(true);
@@ -234,7 +259,6 @@ public class Dashboard extends Fragment {
                 }
             }).start();
         }
-        return v;
     }
 
     View.OnClickListener connectClick = new View.OnClickListener() {
@@ -250,16 +274,26 @@ public class Dashboard extends Fragment {
                                                 final Throwable throwable) {
                         Log.d(LOG_TAG, "Status = " + String.valueOf(status));
 
-                        getActivity().runOnUiThread(new Runnable() {
+                        runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 if (status == AWSIotMqttClientStatus.Connecting) {
                                     tvStatus.setText("Connecting...");
+                                    btnDisconnect.setBackgroundTintList(ColorStateList
+                                            .valueOf(getResources().getColor(R.color.colorPrimaryDark)));
+                                    btnConnect.setEnabled(false);
+                                    btnDisconnect.setEnabled(false);
+                                    btnConnect.setImageResource(R.drawable.ic_sync_black_24dp);
 
                                 } else if (status == AWSIotMqttClientStatus.Connected) {
                                     tvStatus.setText("Connected");
                                     subscribe();
-
+                                    btnConnect.setImageResource(R.drawable.ic_cloud_done_black_24dp);
+                                    btnConnect.setBackgroundTintList(ColorStateList
+                                            .valueOf(getResources().getColor(R.color.colorPrimaryDark)));
+                                    btnDisconnect.setEnabled(true);
+                                    btnDisconnect.setBackgroundTintList(ColorStateList
+                                            .valueOf(getResources().getColor(R.color.red)));
 
                                 } else if (status == AWSIotMqttClientStatus.Reconnecting) {
                                     if (throwable != null) {
@@ -273,29 +307,37 @@ public class Dashboard extends Fragment {
                                     tvStatus.setText("Disconnected");
                                 } else {
                                     tvStatus.setText("Disconnected");
-
+                                    btnConnect.setEnabled(true);
+                                    btnConnect.setImageResource(R.drawable.ic_cloud_black_24dp);
+                                    btnDisconnect.setBackgroundTintList(ColorStateList
+                                            .valueOf(getResources().getColor(R.color.colorPrimaryDark)));
+                                    btnDisconnect.setEnabled(false);
                                 }
                             }
                         });
                     }
                 });
             } catch (final Exception e) {
-                Log.e(LOG_TAG, "Connection error.", e);
+                Toast.makeText(getBaseContext(), "Error connecting to cloud", Toast.LENGTH_SHORT).show();
                 tvStatus.setText("Error! " + e.getMessage());
             }
         }
     };
+
+
     View.OnClickListener disconnectClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
-           disconnect();
+            disconnect();
 
         }
     };
+
+
     void subscribe()
     {
-        final String topic = "event/temp_humidity";
+        final String topic = "Capstone/iot";
 
         Log.d(LOG_TAG, "topic = " + topic);
 
@@ -304,21 +346,28 @@ public class Dashboard extends Fragment {
                     new AWSIotMqttNewMessageCallback() {
                         @Override
                         public void onMessageArrived(final String topic, final byte[] data) {
-                            getActivity().runOnUiThread(new Runnable() {
+                            runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     try {
-
                                         String message = new String(data, "UTF-8");
                                         jsonObj = new JSONObject(message);
-                                        temp=(double)jsonObj.get("Temperature");
-                                        humid=(double)jsonObj.get("Humidity");
-                                        message="TEMPERATURE: "+temp+
-                                                "°C\nHUMIDITY: "+humid+
-                                                "%\n\nTimestamp:"+jsonObj.get("timestamp");
-                                        txtMessage.setText(message);
-                                        xyValueArrayList.add(new xyValue(temp,humid));
-                                        plot(xyValueArrayList);
+                                        temp=(int)jsonObj.get("temperature");
+                                        humid=(int)jsonObj.get("humidity");
+                                        resistance=(double)jsonObj.get("resistance");
+                                        ppm=(int)jsonObj.get("ppm");
+                                        cppm=(int)jsonObj.get("correctedPPM");
+                                        bubbleSeekBar.setProgress((float)cppm);
+
+                                        tvClientId.setText(humid+" %");
+                                        ppmTxt.setText(cppm+" ppm");
+                                        temptxt.setText(temp+" °C");
+
+                                        plot(temp,graphTemp,Color.WHITE,t);
+                                        plot(humid,graphHumidity,Color.CYAN,h);
+                                        plot(cppm,graphppm,Color.GREEN,a);
+
+                                        t+=5;h+=5;a+=5;
 
 
                                     } catch (Exception e) {
@@ -336,14 +385,123 @@ public class Dashboard extends Fragment {
     {
         try {
             mqttManager.disconnect();
+            btnConnect.setEnabled(true);
+            btnConnect.setBackgroundTintList(ColorStateList
+                    .valueOf(getResources().getColor(R.color.colorPrimary)));
+            btnConnect.setImageResource(R.drawable.ic_cloud_black_24dp);
+            btnDisconnect.setBackgroundTintList(ColorStateList
+                    .valueOf(getResources().getColor(R.color.colorPrimaryDark)));
+            btnDisconnect.setEnabled(false);
+
         } catch (Exception e) {
-            Log.e(LOG_TAG, "Disconnect error.", e);
+            Toast.makeText(getBaseContext(), "Unable to disconnect "+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-    void plot(ArrayList<xyValue> xy)
+
+    void init()
     {
-        for(int i=0;i<xy.size();i++)
-            series.appendData(new DataPoint(xy.get(i).getX(),xy.get(i).getY()),true,1000);
-        graph.addSeries(series);
+        btnDisconnect.setEnabled(false);
+        bubbleSeekBar.setEnabled(false);
+        bubbleSeekBar.setThumbColor(getResources().getColor(R.color.green));
+        bubbleSeekBar.setProgress(index);
+
+        setupGraph(graphTemp,50f,-10f);
+        setupGraph(graphHumidity,30f,0f);
+        setupGraph(graphppm,400f,0f);
+    }
+
+
+    void plot(int y,LineChart graph,int color,int cnt)
+    {
+
+        LineData data = graph.getData();
+
+        if (data == null) {
+            data = new LineData();
+            graph.setData(data);
+        }
+
+        ILineDataSet set = data.getDataSetByIndex(0);
+
+        if (set == null) {
+            set = createSet(color);
+            data.addDataSet(set);
+        }
+
+        data.addEntry(new Entry(cnt, y), 0);
+        data.setValueTypeface(tfLabel);
+        data.notifyDataChanged();
+        graph.notifyDataSetChanged();
+
+
+//        graph.animateX(500);
+//        graph.moveViewTo(data.getEntryCount() - 3, y, YAxis.AxisDependency.LEFT);
+
+        graph.invalidate();
+    }
+    private LineDataSet createSet(int color) {
+
+        LineDataSet set = new LineDataSet(null, "");
+        set.setLineWidth(2f);
+        set.setCircleRadius(4f);
+        set.setCircleColor(color);
+        set.setColor(color);
+        set.setHighLightColor(Color.WHITE);
+        set.setAxisDependency(YAxis.AxisDependency.LEFT);
+        set.setValueTextSize(10f);
+        set.setValueTextColor(color);
+        return set;
+    }
+    void setupGraph(LineChart graph,float max,float min){
+
+        graph.setNoDataText("No data available!");
+        graph.getDescription().setEnabled(false);
+        graph.setNoDataTextColor(Color.WHITE);
+        graph.setTouchEnabled(true);
+        graph.setDragDecelerationFrictionCoef(0.9f);
+        graph.setDragEnabled(true);
+        graph.setScaleEnabled(true);
+        graph.setDrawGridBackground(false);
+        graph.setHighlightPerDragEnabled(true);
+        graph.setViewPortOffsets(60f, 40f, 60f, 40f);
+
+
+        XAxis xAxis = graph.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.TOP);
+        xAxis.setTypeface(tfLight);
+        xAxis.setTextSize(10f);
+        xAxis.setTextColor(Color.WHITE);
+        xAxis.setDrawAxisLine(false);
+        xAxis.setDrawGridLines(true);
+        xAxis.setGridColor(Color.LTGRAY);
+        xAxis.setGranularity(1f);
+//        xAxis.setValueFormatter(new ValueFormatter() {
+//            private final SimpleDateFormat mFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+//            @Override
+//            public String getFormattedValue(float value) {
+//
+//                long millis = TimeUnit.HOURS.toMillis((long) value);
+//                return mFormat.format(new Date(millis));
+//            }
+//        });
+
+
+        YAxis leftAxis = graph.getAxisLeft();
+        leftAxis.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
+        leftAxis.setDrawLabels(true);
+        leftAxis.setTypeface(tfLight);
+        leftAxis.setTextColor(ColorTemplate.getHoloBlue());
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setGranularityEnabled(true);
+        leftAxis.setAxisMinimum(min);
+        leftAxis.setAxisMaximum(max);
+        leftAxis.setYOffset(-9f);
+        leftAxis.setTextColor(Color.WHITE);
+
+        YAxis rightAxis = graph.getAxisRight();
+        rightAxis.setEnabled(false);
+        graph.invalidate();
+
+
     }
 }

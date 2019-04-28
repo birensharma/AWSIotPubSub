@@ -1,10 +1,17 @@
 package com.awsiot.awsiotpubsub;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.transition.Fade;
+import android.transition.TransitionInflater;
+import android.transition.TransitionSet;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,13 +25,20 @@ import android.widget.Toast;
 
 public class Drawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private Fragment fragment,initfragment;
+
+    private static final long FADE_DEFAULT_TIME = 100;
+    private static final long MOVE_DEFAULT_TIME = 200;
+    private FragmentManager fragmentManager;
+
+    private Fragment fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
         Toolbar toolbar =findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+//        fragmentManager = getSupportFragmentManager();
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -32,9 +46,9 @@ public class Drawer extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        initfragment=new Dashboard();
+//        fragment=new Dashboard();
         setTitle("Dashboard");
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, initfragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
     }
 
     @Override
@@ -69,39 +83,69 @@ public class Drawer extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        fragment = null;
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-        if (id == R.id.dashboard) {
-            fragment=new Dashboard();
-            setTitle("Dashboard");
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-
-        } else if (id == R.id.temp) {
-            fragment=new Temperature();
-            setTitle("Temperature");
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-
-        } else if (id == R.id.humid) {
-            fragment=new Humidity();
-            setTitle("Humidity");
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-        } else if (id == R.id.air) {
-            fragment=new AirIndex();
-            setTitle("Air Index");
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-        }
-
+//
+//        if (id == R.id.dashboard) {
+//            setTitle("Dashboard");
+//            performTransition(new Dashboard(),fragment);
+//
+//        } else if (id == R.id.temp) {
+//            setTitle("Temperature");
+//            performTransition(new Temperature(),fragment);
+//
+//        } else if (id == R.id.humid) {
+//            setTitle("Humidity");
+//            performTransition(new Humidity(),fragment);
+//        } else if (id == R.id.air) {
+//            setTitle("Air Index");
+//            performTransition(new AirIndex(),fragment);
+//        }else if (id == R.id.facts) {
+//            setTitle("Daily Fact");
+//            performTransition(new Facts(),fragment);
+//        }
+//        else if (id == R.id.nav_share) {
+//
+//        }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+//    @TargetApi(Build.VERSION_CODES.KITKAT)
+//    private void performTransition(Fragment nextFragment, Fragment prevFragment)
+//    {
+//        if (isDestroyed())
+//        {
+//            return;
+//        }
+//        fragment=nextFragment;
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//
+//        // 1. Exit for Previous Fragment
+//        Fade exitFade = new Fade();
+//        exitFade.setDuration(FADE_DEFAULT_TIME);
+//        prevFragment.setExitTransition(exitFade);
+//
+//        // 2. Shared Elements Transition
+//        TransitionSet enterTransitionSet = new TransitionSet();
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            enterTransitionSet.addTransition(TransitionInflater.from(this).inflateTransition(android.R.transition.move));
+//        }
+//        enterTransitionSet.setDuration(MOVE_DEFAULT_TIME);
+//        enterTransitionSet.setStartDelay(FADE_DEFAULT_TIME);
+//        nextFragment.setSharedElementEnterTransition(enterTransitionSet);
+//
+//        // 3. Enter Transition for New Fragment
+//        Fade enterFade = new Fade();
+//        enterFade.setStartDelay(MOVE_DEFAULT_TIME);
+//        enterFade.setDuration(FADE_DEFAULT_TIME);
+//        nextFragment.setEnterTransition(enterFade);
+//
+//        fragmentTransaction.replace(R.id.content_frame, nextFragment);
+//        fragmentTransaction.commitAllowingStateLoss();
+//    }
 }

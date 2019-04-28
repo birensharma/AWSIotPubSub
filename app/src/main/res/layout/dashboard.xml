@@ -20,57 +20,26 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="10dp"
             android:orientation="vertical"
-            android:background="#00897b">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+            android:background="@color/colorPrimaryDark"
+            android:paddingBottom="10dp">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Client Id:"
-                    android:textStyle="bold"
-                    android:textSize="10dp"
-                    android:textColor="@color/white"/>
-
-                <TextView
-                    android:id="@+id/tvClientId"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="6"
-                    android:textSize="10dp"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/white"/>
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:textStyle="bold"
-                    android:textSize="10dp"
-                    android:text="Status:"
-                    android:textColor="@color/white"/>
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:gravity="center">
 
                 <TextView
                     android:id="@+id/tvStatus"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="8"
-                    android:gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
                     android:text="Disconnected"
-                    android:textSize="10dp"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
                     android:textColor="@color/white"/>
             </LinearLayout>
 
@@ -78,22 +47,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:paddingVertical="5dp"
                 >
 
-                <Button
+                <android.support.design.widget.FloatingActionButton
                     android:id="@+id/btnConnect"
-                    android:layout_gravity="left"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
                     android:text="Connect"
+                    android:padding="10dp"
                     android:textColor="@color/white"
                     android:layout_marginHorizontal="10dp"
-                    android:background="@drawable/connect" />
+                    android:src="@drawable/ic_cloud_black_24dp"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:rippleColor="#fff"
+                    app:fabCustomSize="40dp"/>
 
-                <Button
+                <android.support.design.widget.FloatingActionButton
                     android:id="@+id/btnDisconnect"
+                    android:padding="10dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="10dp"
@@ -101,7 +75,10 @@
                     android:layout_gravity="right"
                     android:text="Disconnect"
                     android:textColor="@color/white"
-                    android:background="@drawable/disconnect"/>
+                    android:src="@drawable/ic_cloud_off_black_24dp"
+                    app:backgroundTint="@color/red"
+                    app:rippleColor="#fff"
+                    app:fabCustomSize="40dp"/>
             </LinearLayout>
 
 
@@ -110,201 +87,445 @@
     </android.support.v7.widget.CardView>
 
 
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scrollbars="none">
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/backgroundmain">
-        <GridLayout
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
-            android:layout_marginHorizontal="10dp">
+            android:orientation="vertical"
+            android:background="@drawable/backgroundmain">
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:rowCount="3"
+                android:columnOrderPreserved="false"
+                android:layout_marginVertical="20dp"
+                android:layout_marginHorizontal="10dp">
 
+                <android.support.v7.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_row="0"
+                    android:clipChildren="true"
+                    android:layout_column="0"
+                    android:layout_columnWeight="1"
+                    android:layout_columnSpan="2"
+                    app:cardCornerRadius="20dp">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="20dp">
+                        <TextView
+                            android:id="@+id/index"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Air index"
+                            android:fontFamily="@font/comfortaa"
+                            android:textSize="30sp"
+                            android:layout_centerHorizontal="true"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="40dp" />
+
+                        <com.xw.repo.BubbleSeekBar
+                            android:id="@+id/seek"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:bsb_bubble_color="#000"
+                            app:bsb_bubble_text_color="#fff"
+                            app:bsb_max="500"
+                            app:bsb_min="0"
+                            app:bsb_progress="0"
+                            app:bsb_second_track_color="#999"
+                            app:bsb_section_count="5"
+                            app:bsb_section_text_position="bottom_sides"
+                            app:bsb_show_progress_in_float="false"
+                            app:bsb_show_section_mark="true"
+                            app:bsb_show_section_text="true"
+                            app:bsb_show_thumb_text="true"
+                            app:bsb_track_color="#999"
+                            android:layout_below="@id/index"
+                            app:bsb_bubble_text_size="10dp"
+                            app:bsb_always_show_bubble="false"
+                            app:bsb_thumb_radius="7dp"
+                            app:bsb_thumb_text_color="@color/lemon" />
+
+                        <TextView
+                            android:id="@+id/ppmtxt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/seek"
+                            android:text="0 ppm"
+                            android:gravity="center"
+                            android:textSize="40dp"
+                            android:fontFamily="@font/comfortaa"
+                            android:textStyle="bold"
+                            android:textColor="#999"
+                            android:layout_marginTop="20dp"/>
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+                <android.support.v7.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_row="1"
+                    android:layout_column="0"
+                    app:cardCornerRadius="10dp">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="20dp">
+                        <TextView
+                            android:id="@+id/temptxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Temperature"
+                            android:textSize="17sp"
+                            android:textStyle="bold"/>
+                        <TextView
+                            android:layout_below="@id/temptxt"
+                            android:id="@+id/temperature"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:textColor="#fff"/>
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+                <android.support.v7.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_row="1"
+                    android:layout_columnWeight="1"
+                    android:layout_rowWeight="1"
+                    android:layout_column="1"
+                    android:layout_margin="5dp"
+                    app:cardCornerRadius="10dp">
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="20dp">
+                        <TextView
+                            android:id="@+id/client"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Humidity"
+                            android:textStyle="bold"
+                            android:textSize="15sp"/>
+
+                        <TextView
+                            android:id="@+id/tvClientId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            android:textColor="#fff"
+                            android:layout_below="@id/client"
+                            android:layout_marginTop="10dp"/>
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+                <android.support.v7.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_columnWeight="1"
+                    android:layout_row="2"
+                    android:layout_columnSpan="2"
+                    app:cardCornerRadius="10dp">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="20dp"
+                        android:background="@drawable/background">
+                        <TextView
+                            android:id="@+id/current"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Current Location"
+                            android:textSize="17sp"
+                            android:textStyle="bold"/>
+                        <View
+                            android:id="@+id/dot"
+                            android:layout_below="@id/current"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:background="@drawable/dot"
+                            android:layout_marginTop="15dp"/>
+                        <TextView
+                            android:layout_below="@id/current"
+                            android:id="@+id/location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Neemrana"
+                            android:gravity="center"
+                            android:layout_toRightOf="@id/dot"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="5dp"
+                            android:textColor="#fff"/>
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+
+            </GridLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginVertical="20dp"
+                android:background="#fff"/>
 
             <android.support.v7.widget.CardView
+                android:id="@+id/daily_facts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_row="0"
-                android:layout_column="0"
-                android:layout_columnWeight="1"
-                app:cardCornerRadius="20dp">
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="20dp">
+                app:cardCornerRadius="15dp"
+                android:layout_gravity="center"
+                android:clipChildren="true">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="20dp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:background="@drawable/background4">
                     <TextView
-                        android:id="@+id/index"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Air index"
+                        android:text="Daily Facts"
+                        android:textStyle="bold"
+                        android:textSize="20sp"
+                        android:textColor="#fff"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_action_bulb"
+                        android:layout_marginLeft="10dp"/>
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginVertical="20dp"
+                android:background="#fff"/>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="5dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_margin="20dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingVertical="20dp"
+                    android:background="@drawable/background2">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_action_name"
+                        android:layout_gravity="center"
+                        android:layout_centerHorizontal="true"/>
+                    <TextView
+                        android:id="@+id/ppm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:textSize="20dp"
-                        android:layout_centerHorizontal="true"
-                        android:textStyle="bold"/>
-                    <ProgressBar
-                        android:id="@+id/progress"
+                        android:fontFamily="@font/comfortaa"
+                        android:padding="20dp"
+                        android:gravity="center"
+                        android:text="Air Index"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"/>
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        android:id="@+id/graphppm"
+                        android:layout_below="@id/ppm"
+                        />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/index"
+                        android:text="ppm →"
+                        android:rotation="-90"
+                        android:textSize="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_above="@id/label"/>
+
+                    <TextView
+                        android:id="@+id/label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Time(sec) →"
+                        android:textSize="10sp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_below="@id/graphppm"/>
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginVertical="20dp"
+                android:background="#fff"/>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="5dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:layout_margin="20dp"
+                >
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingVertical="20dp"
+                    android:background="@drawable/background4">
+                    <ImageView
+                        android:id="@+id/tempImg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_action_sunny"
+                        android:layout_centerHorizontal="true"/>
+                    <TextView
+                        android:id="@+id/txtMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:fontFamily="@font/comfortaa"
+                        android:padding="20dp"
+                        android:gravity="center"
                         android:layout_centerHorizontal="true"
-                        android:rotation="120"
-                        android:layout_marginTop="20dp"
+                        android:text="Temperature"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"/>
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        android:id="@+id/graph"
+                        android:layout_below="@id/txtMessage"
+
                         />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="°Celcius →"
+                        android:rotation="-90"
+                        android:textSize="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_above="@id/label2"/>
+                    <TextView
+                        android:id="@+id/label2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Time(sec) →"
+                        android:textSize="10sp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_below="@id/graph"/>
                 </RelativeLayout>
+
             </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_row="0"
-                android:layout_column="1"
-                android:layout_margin="5dp"
-                android:layout_columnWeight="1">
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="20dp">
-
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_row="1"
-                android:layout_column="0"
-                android:layout_columnWeight="1">
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="20dp">
-
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_row="1"
-                android:layout_column="1"
-                android:layout_margin="5dp"
-                android:layout_columnWeight="1">
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="20dp">
-
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
-
-        </GridLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginHorizontal="50dp"
-            android:layout_marginVertical="20dp"
-            android:background="#ddd"/>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="30dp"
-            app:cardElevation="5dp"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:layout_margin="20dp"
-            >
-            <RelativeLayout
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="20dp"
-                android:background="@drawable/background2">
-                <ImageView
-                    android:id="@+id/tempImg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_action_sunny"
-                    android:layout_centerHorizontal="true"/>
-                <TextView
-                    android:id="@+id/txtMessage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20dp"
-                    android:padding="20dp"
-                    android:gravity="center"
-                    android:layout_centerHorizontal="true"
-                    android:text="Temperature"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"/>
-                <com.jjoe64.graphview.GraphView
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginVertical="20dp"
+                android:background="#fff"/>
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="30dp"
+                app:cardElevation="5dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_margin="20dp">
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:id="@+id/graph"
-                    android:layout_below="@id/txtMessage"
-                    />
-            </RelativeLayout>
+                    android:layout_height="match_parent"
+                    android:paddingVertical="20dp"
+                    android:background="@drawable/background">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_action_name"
+                        android:layout_gravity="center"
+                        android:layout_centerHorizontal="true"/>
+                    <TextView
+                        android:id="@+id/humidtxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:fontFamily="@font/comfortaa"
+                        android:padding="20dp"
+                        android:gravity="center"
+                        android:text="Humidity"
+                        android:textStyle="bold"
+                        android:textColor="@color/white"/>
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        android:id="@+id/graphHumid"
+                        android:layout_below="@id/humidtxt"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="% →"
+                        android:rotation="-90"
+                        android:textSize="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:layout_above="@id/label3"/>
+                    <TextView
+                        android:id="@+id/label3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Time(sec) →"
+                        android:textSize="10sp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_below="@id/graphHumid"/>
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
 
-        </android.support.v7.widget.CardView>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginHorizontal="50dp"
-            android:layout_marginVertical="20dp"
-            android:background="#ddd"/>
-        <android.support.v7.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="30dp"
-            android:elevation="5dp"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:layout_margin="20dp">
-            <RelativeLayout
+
+
+
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="20dp"
-                android:background="@drawable/background">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_action_name"
-                    android:layout_gravity="center"
-                    android:layout_centerHorizontal="true"/>
-                <TextView
-                    android:id="@+id/humidtxt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="20dp"
-                    android:padding="20dp"
-                    android:gravity="center"
-                    android:text="Humidity"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"/>
-                <com.jjoe64.graphview.GraphView
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    android:id="@+id/hgraph"
-                    android:layout_below="@id/humidtxt"/>
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginHorizontal="50dp"
-            android:layout_marginVertical="20dp"
-            android:background="#ddd"/>
-
-    </LinearLayout>
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginVertical="20dp"
+                android:background="#fff"/>
 
 
-</ScrollView>
+
+        </LinearLayout>
+
+
+    </ScrollView>
 
 </LinearLayout>

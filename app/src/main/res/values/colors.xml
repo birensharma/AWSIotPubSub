@@ -8,4 +8,11 @@
     <color name='white'>#fff</color>
     <color name="green">#4caf50</color>
     <color name="darkgreen">#009688</color>
+    <color name="black">#000</color>
+    <color name="violet">#aa00ff</color>
+    <color name="pink">#f50057</color>
+    <color name="cyan">#18ffff</color>
+    <color name="lemon">#c6ff00</color>
+    <color name="bluegrey">#607d8b</color>
+
 </resources>
