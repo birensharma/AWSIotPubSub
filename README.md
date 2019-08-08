@@ -37,5 +37,13 @@
    <li>VS Code Editor</li>
  
 </ul> 
+<h1>Group Members</h1>
+  <ul>
+  <li>Shantanu Bahuguna</li>
+  <li>Biren Sharma</li>
+  <li>Jobin Joseph</li>
+   <li>Hitesh Mittal</li>
+  <li>Yogesh Sharma</li> 
+</ul>
 <h1>Flow Diagram</h1>
 <img src="https://github.com/birensharma/Capstone_IOT/blob/master/Wireframe_Model/Flow%20Diagram.PNG">
